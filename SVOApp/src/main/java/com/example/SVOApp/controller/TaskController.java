@@ -65,6 +65,7 @@ public class TaskController {
 
         return hashMap;
     }
+
     @GetMapping("/show")
     public List getTasks() {
         List<Task> taskList = taskService.allTasks();
@@ -100,6 +101,12 @@ public class TaskController {
     @PostMapping
     public ResponseEntity addWorker(@RequestBody Worker worker) throws URISyntaxException {
         workerService.addWorker(worker);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/move")
+    public ResponseEntity moveTask(@RequestBody Worker worker, @RequestBody Task task){
+        task.setWorker(worker.getId());
         return ResponseEntity.ok().build();
     }
 }
