@@ -1,5 +1,4 @@
 import React, {Component, useEffect, useState} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Service from "./Service";
 class App extends Component {
@@ -12,7 +11,7 @@ class App extends Component {
     }
 
     async componentDidMount() {
-        Service.getOnlyTasks().then((response) => {
+        Service.getTable().then((response) => {
             this.setState({ task: response.data})
         });;
     }
@@ -22,16 +21,22 @@ class App extends Component {
     return (
         <div className="App">
           <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
             <div className="App-intro">
               <h2>Clients</h2>
-
-              {task.map(task =>
-                  <div key={task.id}>
-                    {task.startTime} ({task.startTime})
-
-                  </div>
-              )}
+                {Object.keys(task).map(key =>
+                    <h2>
+                        <div key={key.id}>
+                            {key}
+                        </div>)
+                    {
+                        task[key].map(test => (
+                            <div key={test.id}>
+                                {test.flight}
+                            </div>)
+                        )
+                    }
+                    </h2>
+                )}
             </div>
           </header>
         </div>
