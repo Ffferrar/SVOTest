@@ -38,27 +38,27 @@ public class TaskController {
     @GetMapping("/") //В базе данных должна существовать запись с id 28957454
     public HashMap getAll() {
 
-        HashMap <Worker, List<Task>> hashMap= new HashMap<Worker, List<Task>>();
+        HashMap <String, List<Task>> hashMap= new HashMap<String, List<Task>>();
         List<Task> taskList = taskService.allTasks();
 
         for (Task element: taskList){
             if (workerService.getById(element.getWorker()) != null) {
                 Worker worker = workerService.getById(element.getWorker());
-                if (hashMap.containsKey(worker)) {
-                    hashMap.get(worker).add(element);
+                if (hashMap.containsKey(worker.getName())) {
+                    hashMap.get(worker.getName()).add(element);
                 } else {
                     List<Task> list = new ArrayList<Task>();
                     list.add(element);
-                    hashMap.put(worker, list);
+                    hashMap.put(worker.getName(), list);
                 }
             }
             else {
-                if (hashMap.containsKey(workerService.getById(FREE_TASK))) {
-                    hashMap.get(workerService.getById(FREE_TASK)).add(element);
+                if (hashMap.containsKey(workerService.getById(FREE_TASK).getName())) {
+                    hashMap.get(workerService.getById(FREE_TASK).getName()).add(element);
                 } else {
                     List<Task> list = new ArrayList<Task>();
                     list.add(element);
-                    hashMap.put(workerService.getById(FREE_TASK), list);
+                    hashMap.put(workerService.getById(FREE_TASK).getName(), list);
                 }
             }
         }
