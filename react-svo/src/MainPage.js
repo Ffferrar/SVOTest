@@ -50,6 +50,10 @@ class MainPage extends Component {
     dropHandler(e, worker, task) {
         console.log("Я драг хэндлер");
         e.preventDefault();
+        console.log(worker);
+        console.log(JSON.stringify(task));
+        Service.putChangeWorker(worker, task.id);
+
         const currentIndex = this.state.note[this.state.currentWorker].indexOf(this.state.currentTask)
         this.state.note[this.state.currentWorker].splice(currentIndex, 1)
         //Здесь удаляем с текущей доски, поэтому здесь же можно поменять  индекс работника
@@ -80,8 +84,8 @@ class MainPage extends Component {
 
     render(){
         const {note} = this.state;
-        const {currentWorker} = this.state;
-        const {currentTask} = this.state;
+        // const {currentWorker} = this.state;
+        // const {currentTask} = this.state;
 
         return(
             <div className='MainPage'>

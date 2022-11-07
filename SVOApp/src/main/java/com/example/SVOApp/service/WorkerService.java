@@ -42,6 +42,11 @@ public class WorkerService {
         return userFromDb.orElse(new Worker());
     }
 
+    public Worker getWorkerByName(String username){
+        Worker worker = workerRepository.findByName(username);
+        return worker;
+    }
+
     public boolean addWorker(Worker worker) {
         workerRepository.save(worker);
         return true;

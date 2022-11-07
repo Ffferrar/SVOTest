@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
@@ -105,9 +106,13 @@ public class TaskController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/move")
-    public ResponseEntity moveTask(@RequestBody Worker worker, @RequestBody Task task){
-        task.setWorker(worker.getId());
+    @PostMapping("/{id}")
+    public ResponseEntity moveTask(@RequestBody String worker, @PathVariable("id") Integer id){
+        System.out.println(worker);
+        Worker workerEntity = workerService.getWorkerByName(worker);
+        Task task = taskService.getById(id);
+        task.setWorker(workerEntity.getId());
+        taskService.add(task);
         return ResponseEntity.ok().build();
     }
 }

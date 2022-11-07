@@ -1,3 +1,8 @@
+{ 
+   "workerName": "Petr",
+   "id": 3
+}
+
 CREATE TABLE worker
 (
     id INT PRIMARY KEY AUTO_INCREMENT,
