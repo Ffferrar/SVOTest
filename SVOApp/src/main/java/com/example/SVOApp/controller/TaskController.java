@@ -45,6 +45,7 @@ public class TaskController {
             if (workerService.getById(element.getWorker()) != null) {
                 Worker worker = workerService.getById(element.getWorker());
                 if (hashMap.containsKey(worker.getName())) {
+
                     hashMap.get(worker.getName()).add(element);
                 } else {
                     List<Task> list = new ArrayList<Task>();
