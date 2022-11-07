@@ -107,12 +107,14 @@ public class TaskController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity moveTask(@RequestBody String worker, @PathVariable("id") Integer id){
-        System.out.println(worker);
+    public ResponseEntity moveTask(@RequestBody HashMap<String, String> inputWorker, @PathVariable("id") Integer id){
+        String worker = inputWorker.get("worker");
         Worker workerEntity = workerService.getWorkerByName(worker);
         Task task = taskService.getById(id);
+        System.out.println(worker);
         task.setWorker(workerEntity.getId());
         taskService.add(task);
+
         return ResponseEntity.ok().build();
     }
 }

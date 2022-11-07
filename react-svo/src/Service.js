@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const ONLY_TASK_API_URL = 'http://localhost:8080/show';
 const TABLE_API_URL = 'http://localhost:8080/';
-const CHANGING_WORKER_URL = 'http://localhost:8080/move'
+const CHANGING_WORKER_URL = 'http://localhost:8080/'
 
 class Service {
     getOnlyTasks(){
@@ -13,8 +13,8 @@ class Service {
         return axios.get(TABLE_API_URL);
     }
 
-    putChangeWorker(worker, taskName){
-        return axios.post(CHANGING_WORKER_URL, {params: {worker, taskName}});
+    putChangeWorker(worker, id){
+        return axios.post(CHANGING_WORKER_URL + id, {worker});
     }
 }
 
