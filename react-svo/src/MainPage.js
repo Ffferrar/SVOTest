@@ -22,6 +22,7 @@ class MainPage extends Component {
     }
 
     dragOverHandler(e) {
+        console.log("Я драг оверхэндлер");
         e.preventDefault();
         if (e.target.className == 'test'){
             e.target.style.boxShadow = '0 4px 3px gray'
@@ -29,26 +30,45 @@ class MainPage extends Component {
     }
 
     dragLeaveHandler(e) {
+        console.log("Я драг ливхэндлер");
         e.target.style.boxShadow = 'none'
     }
 
     dragStartHandler(e, worker, task) {
-        console.log(worker);
+        console.log("Я драг старт");
         this.setState({currentTask: task});
         this.setState({currentWorker: worker});
     }
 
+    //for failed docking
     dragEndHandler(e) {
+        console.log("Я драг ендхэндлер");
         e.target.style.boxShadow = 'none'
     }
 
+    //for docking in the right place of another board
     dropHandler(e, worker, task) {
+        console.log("Я драг хэндлер");
         e.preventDefault();
         const currentIndex = this.state.note[this.state.currentWorker].indexOf(this.state.currentTask)
-
         this.state.note[this.state.currentWorker].splice(currentIndex, 1)
+        //Здесь удаляем с текущей доски, поэтому здесь же можно поменять  индекс работника
         const dropIndex = this.state.note[worker].indexOf(task)
+        //вообще лучше здесь. Worker - это новая доска, куда мы ее привели
         this.state.note[worker].splice(dropIndex + 1, 0, this.state.currentTask)
+        this.setState(Object.keys(this.state.note).map(b => {
+            if (b === this.state.currentWorker){
+                return this.state.currentWorker
+            }
+            return b
+        }))
+    }
+
+    dropWorkerHandler(e, worker){
+        if (this.state.note[worker] !=0){return;}
+        this.state.note[worker].push(this.state.currentTask)
+        const currentIndex = this.state.note[this.state.currentWorker].indexOf(this.state.currentTask)
+        this.state.note[this.state.currentWorker].splice(currentIndex, 1)
         this.setState(Object.keys(this.state.note).map(b => {
             if (b === this.state.currentWorker){
                 return this.state.currentWorker
@@ -66,7 +86,9 @@ class MainPage extends Component {
         return(
             <div className='MainPage'>
                 {Object.keys(note).map(worker =>
-                    <div className='board'>
+                    <div className='board'
+                         onDragOver={(e) =>  this.dragOverHandler(e)}
+                         onDrop={(e) =>  this.dropWorkerHandler(e, worker)}>
                         <div className="board_title">{worker}</div>
                         {
                             note[worker].map(task => (
@@ -80,7 +102,7 @@ class MainPage extends Component {
                                     draggable={true}
                                     className="item"
                                 >
-                                    {task.flight}
+                                    {task.flight}, worker: {task.worker}
                                 </div>)
                             )
                         }
