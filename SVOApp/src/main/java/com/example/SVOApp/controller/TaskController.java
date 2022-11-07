@@ -41,6 +41,7 @@ public class TaskController {
 
         HashMap <String, List<Task>> hashMap= new HashMap<String, List<Task>>();
         List<Task> taskList = taskService.allTasks();
+        List<Worker> workersList = workerService.allWorkers();
 
         for (Task element: taskList){
             if (workerService.getById(element.getWorker()) != null) {
@@ -65,6 +66,13 @@ public class TaskController {
             }
         }
 
+        for (Worker element : workersList) {
+            if (!hashMap.containsKey(element.getName())){
+                List<Task> list = new ArrayList<Task>();
+                hashMap.put(element.getName(), list);
+            }
+        }
+        System.out.println(hashMap);
         return hashMap;
     }
 
