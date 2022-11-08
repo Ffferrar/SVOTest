@@ -1,10 +1,14 @@
 package com.example.SVOApp.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import java.sql.Time;
 
 @Entity
 @Table(name = "task")
 public class Task {
+    public static final Integer FREE_TASK = 28957454;
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,17 +19,18 @@ public class Task {
 
     private Integer workerId;
 
-    private Integer startTime;
+    private Time startTime;
 
-    private Integer endTime;
+    private Time endTime;
 
-    public Task(){};
+    public Task(){this.startTime = new Time(0);
+        this.endTime = new Time(0);};
 
-    public Task(String flight, Integer startTime, Integer endTime){
+    public Task(String flight, Long startTime, Long endTime){
+        this.startTime = new Time(startTime);
+        this.endTime = new Time(endTime);
         this.flight = flight;
-        this.workerId = 1000; // поменять на дефолтное
-        this.startTime = startTime; // поменять на дефолтное
-        this.endTime = endTime; // поменять на дефолтное
+        this.workerId = FREE_TASK; // поменять на дефолтное
     }
 
     public Integer getId() {
@@ -48,19 +53,19 @@ public class Task {
         this.workerId = worker;
     }
 
-    public Integer getStartTime() {
-        return startTime;
+    public Long getStartTime() {
+        return startTime.getTime();
     }
 
     public void setStartTime(Integer startTime) {
-        this.startTime = startTime;
+        this.startTime.setTime(startTime);
     }
 
-    public Integer getEndTime() {
-        return endTime;
+    public Long getEndTime() {
+        return endTime.getTime();
     }
 
     public void setEndTime(Integer endTime) {
-        this.endTime = endTime;
+        this.endTime.setTime(endTime);
     }
 }

@@ -92,6 +92,7 @@ public class TaskController {
     @DeleteMapping
     public ResponseEntity deleteWorker(@RequestBody String workerName) {
         Worker worker = workerService.getWorkerByName(workerName);
+        System.out.println(workerName + " " + worker);
         Integer workerId = worker.getId();
         List<Task> list = taskService.allTasks();
 
@@ -105,15 +106,21 @@ public class TaskController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity editTask(@PathVariable("id") Integer id, Model model) {
-        Task task = taskService.getById(id);
-        model.addAttribute("task", task);
+    @PostMapping("/edit/{id}")
+    public ResponseEntity editTask(@RequestBody Task task) {
+        taskService.add(task);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/worker/{id}")
+    public ResponseEntity editWorker(@RequestBody Worker worker) {
+        workerService.addWorker(worker);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/add")
     public ResponseEntity addTask(@RequestBody Task task) throws URISyntaxException {
+        task.setWorker(FREE_TASK);
         taskService.add(task);
         return ResponseEntity.ok().build();
     }

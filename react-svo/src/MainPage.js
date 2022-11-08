@@ -1,6 +1,7 @@
 import React, {Component, useState} from 'react';
 import './MainPage.css'
 import Service from "./Service";
+import TimeConverter from "./TimeConverter";
 
 class MainPage extends Component {
     constructor(props){
@@ -85,9 +86,7 @@ class MainPage extends Component {
 
     render(){
         const {note} = this.state;
-        // const {currentWorker} = this.state;
-        // const {currentTask} = this.state;
-
+        console.log(note)
         return(
             <div className='MainPage'>
                 {Object.keys(note).map(worker =>
@@ -109,7 +108,8 @@ class MainPage extends Component {
                                     draggable={true}
                                     className="item"
                                 >
-                                    {task.flight}, worker: {task.worker}
+                                    {task.flight}, worker: {task.worker}, startTime:
+                                    {TimeConverter.getNiceTime(task.endTime)}
                                 </div>)
                             )
                         }
