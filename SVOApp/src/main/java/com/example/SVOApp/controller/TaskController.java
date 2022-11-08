@@ -90,7 +90,17 @@ public class TaskController {
     }
 
     @DeleteMapping
-    public ResponseEntity deleteWorker(@RequestBody Worker worker) {
+    public ResponseEntity deleteWorker(@RequestBody String workerName) {
+        Worker worker = workerService.getWorkerByName(workerName);
+        Integer workerId = worker.getId();
+        List<Task> list = taskService.allTasks();
+
+        for (Task element: list){
+            if (element.getWorker() == workerId){
+                element.setWorker(FREE_TASK);
+                taskService.add(element);
+            }
+        }
         workerService.delete(worker);
         return ResponseEntity.ok().build();
     }
