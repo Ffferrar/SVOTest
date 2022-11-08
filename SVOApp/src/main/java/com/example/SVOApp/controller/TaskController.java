@@ -44,10 +44,9 @@ public class TaskController {
         List<Worker> workersList = workerService.allWorkers();
 
         for (Task element: taskList){
-            if (workerService.getById(element.getWorker()) != null) {
+            if (workerService.getById(element.getWorker()).getName() != null) {
                 Worker worker = workerService.getById(element.getWorker());
                 if (hashMap.containsKey(worker.getName())) {
-
                     hashMap.get(worker.getName()).add(element);
                 } else {
                     List<Task> list = new ArrayList<Task>();
@@ -56,6 +55,9 @@ public class TaskController {
                 }
             }
             else {
+                element.setWorker(FREE_TASK);
+                taskService.add(element);
+                System.out.println(element.getWorker());
                 if (hashMap.containsKey(workerService.getById(FREE_TASK).getName())) {
                     hashMap.get(workerService.getById(FREE_TASK).getName()).add(element);
                 } else {

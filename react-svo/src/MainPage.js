@@ -108,8 +108,7 @@ class MainPage extends Component {
                                     draggable={true}
                                     className="item"
                                 >
-                                    {task.flight}, worker: {task.worker}, startTime:
-                                    {TimeConverter.getNiceTime(task.endTime)}
+                                    {task.flight}   Arrival: {TimeConverter.getNiceTime(task.startTime)}        Departure : {TimeConverter.getNiceTime(task.endTime)}
                                 </div>)
                             )
                         }
