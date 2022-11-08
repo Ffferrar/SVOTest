@@ -1,0 +1,89 @@
+{ 
+   "workerName": "Petr",
+   "id": 3
+}
+
+CREATE TABLE worker
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255),
+    tasks BLOB
+);
+
+create table worker(id integer auto_increment primary key, name varchar(255), tasks blob);
+
+create table task(id integer auto_increment primary key, flight varchar(255), workerId integer, startTime integer, endTime integer);
+
+<div key={list.id}>
+                    {list.flight}
+
+                  </div>
+
+
+{Object.keys(task).map((ident) => {
+                    return(
+                        <>
+                        {Object.keys(task[ident]).map(type => {
+                            return (
+                                <>
+                                    <p>{ident}</p>
+                                    <div key={type.id}>
+                                        {type.flight} ({type.startTime})
+
+                                    </div>
+                                </>
+                            )
+                            })}
+                        </>
+                    )
+                }
+
+              )}
+
+
+http POST :8080/api/add name='Utah JUG' 
+проблема: как посмотреть, сохраняю ли я что нибудь в бд и есть ли она?
+
+curl -X GET http://localhost:8080/
+http://localhost:8080/add
+
+
+curl -X POST http://localhost:8080/ -d '{"flight": "John Doe", "startTime": "john.doe@baeldgung.com"}'
+
+.created(new URI("/api/" + ta.getId())).body(ta)
+
+import React, {Component, useEffect, useState} from 'react';
+import logo from './logo.svg';
+import './App.css';
+class App extends Component {
+    state = {
+        task: []
+    };
+
+    async componentDidMount() {
+        const response = await fetch('/api');
+        const body = await response.json();
+        this.setState({task: body});
+    }
+
+    render() {
+        const {task} = this.state;
+        return (
+            <div className="App">
+                <header className="App-header">
+                    <img src={logo} className="App-logo" alt="logo" />
+                    <div className="App-intro">
+                        <h2>Clients</h2>
+
+                        {task.map(task =>
+                            <div key={task.id}>
+                                {task.endTime} ({task.startTime})
+                            </div>
+                        )}
+                    </div>
+                </header>
+            </div>
+        );
+    }
+}
+export default App;

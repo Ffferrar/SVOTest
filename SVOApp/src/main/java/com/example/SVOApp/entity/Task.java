@@ -10,6 +10,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "flight")
     private String flight;
 
     private Integer workerId;

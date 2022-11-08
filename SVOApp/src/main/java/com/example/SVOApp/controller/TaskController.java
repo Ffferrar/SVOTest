@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
@@ -38,33 +39,43 @@ public class TaskController {
     @GetMapping("/") //В базе данных должна существовать запись с id 28957454
     public HashMap getAll() {
 
-        HashMap <Worker, List<Task>> hashMap= new HashMap<Worker, List<Task>>();
+        HashMap <String, List<Task>> hashMap= new HashMap<String, List<Task>>();
         List<Task> taskList = taskService.allTasks();
+        List<Worker> workersList = workerService.allWorkers();
 
         for (Task element: taskList){
             if (workerService.getById(element.getWorker()) != null) {
                 Worker worker = workerService.getById(element.getWorker());
-                if (hashMap.containsKey(worker)) {
-                    hashMap.get(worker).add(element);
+                if (hashMap.containsKey(worker.getName())) {
+
+                    hashMap.get(worker.getName()).add(element);
                 } else {
                     List<Task> list = new ArrayList<Task>();
                     list.add(element);
-                    hashMap.put(worker, list);
+                    hashMap.put(worker.getName(), list);
                 }
             }
             else {
-                if (hashMap.containsKey(workerService.getById(FREE_TASK))) {
-                    hashMap.get(workerService.getById(FREE_TASK)).add(element);
+                if (hashMap.containsKey(workerService.getById(FREE_TASK).getName())) {
+                    hashMap.get(workerService.getById(FREE_TASK).getName()).add(element);
                 } else {
                     List<Task> list = new ArrayList<Task>();
                     list.add(element);
-                    hashMap.put(workerService.getById(FREE_TASK), list);
+                    hashMap.put(workerService.getById(FREE_TASK).getName(), list);
                 }
             }
         }
 
+        for (Worker element : workersList) {
+            if (!hashMap.containsKey(element.getName())){
+                List<Task> list = new ArrayList<Task>();
+                hashMap.put(element.getName(), list);
+            }
+        }
+        System.out.println(hashMap);
         return hashMap;
     }
+
     @GetMapping("/show")
     public List getTasks() {
         List<Task> taskList = taskService.allTasks();
@@ -100,6 +111,18 @@ public class TaskController {
     @PostMapping
     public ResponseEntity addWorker(@RequestBody Worker worker) throws URISyntaxException {
         workerService.addWorker(worker);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity moveTask(@RequestBody HashMap<String, String> inputWorker, @PathVariable("id") Integer id){
+        String worker = inputWorker.get("worker");
+        Worker workerEntity = workerService.getWorkerByName(worker);
+        Task task = taskService.getById(id);
+        System.out.println(worker);
+        task.setWorker(workerEntity.getId());
+        taskService.add(task);
+
         return ResponseEntity.ok().build();
     }
 }
